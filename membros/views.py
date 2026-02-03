@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import MembroForm
+from .models import Membro
 
 def cadastrar_membro(request):
     if request.method == 'POST':
@@ -17,3 +18,8 @@ def cadastrar_membro(request):
         form = MembroForm()
 
     return render(request, 'membros/cadastro.html', {'form': form})
+# --- NOVA FUNÇÃO: LISTAR MEMBROS ---
+def listar_membros(request):
+    # Busca todos os membros e ordena pelo nome (A-Z)
+    membros = Membro.objects.all().order_by('nome_completo')
+    return render(request, 'membros/lista.html', {'membros': membros})
