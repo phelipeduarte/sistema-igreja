@@ -1,0 +1,243 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row justify-content-center mb-5">
+    <div class="col-md-10 col-lg-8"> 
+        <div class="card card-modern mt-4">
+            
+            <div class="card-header card-header-modern d-flex justify-content-between align-items-center">
+                <div>
+                    <h3 class="fw-bold text-dark mb-0">Ficha de Membro</h3>
+                    <p class="text-muted mb-0 small">Preencha os dados para novo cadastro</p>
+                </div>
+                <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2">Novo Cadastro</span>
+            </div>
+            
+            <div class="card-body p-4"> 
+                
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show rounded-3 shadow-sm border-0" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <h5 class="section-title"><i class="bi bi-person-badge-fill"></i> 1. Identificação</h5>
+                    
+                    <div class="row g-3">
+                        
+                        <div class="col-md-3 d-flex flex-column align-items-center">
+                            <div class="text-center p-2 border rounded bg-white shadow-sm position-relative" style="width: 140px;">
+                                <img id="visualizacao-foto" 
+                                     src="https://via.placeholder.com/150/cccccc/ffffff?text=Foto" 
+                                     class="img-fluid rounded mb-2" 
+                                     style="width: 120px; height: 120px; object-fit: cover; border: 1px solid #eee;">
+                                <small class="text-muted d-block" style="font-size: 0.7rem;">Clique para alterar</small>
+                            </div>
+                            <div class="mt-2 w-100">
+                                <input type="file" name="foto" accept="image/*" class="form-control form-control-sm" id="id_foto" onchange="mostrarPreview(this)">
+                            </div>
+                        </div>
+
+                        <div class="col-md-9">
+                            <div class="row g-3">
+                                <div class="col-md-3">
+                                    {{ form.numero_ficha|as_crispy_field }}
+                                </div>
+                                <div class="col-md-9">
+                                    {{ form.nome_completo|as_crispy_field }}
+                                </div>
+                            </div>
+                            
+                            <div class="row g-3 mt-1">
+                                <div class="col-md-4">
+                                    {{ form.data_nascimento|as_crispy_field }}
+                                </div>
+                                <div class="col-md-4">
+                                    {{ form.cpf|as_crispy_field }}
+                                </div>
+                                <div class="col-md-4">
+                                    {{ form.rg|as_crispy_field }}
+                                </div>
+                            </div>
+
+                            <div class="row g-3 mt-1">
+                                <div class="col-md-12">
+                                    {{ form.naturalidade|as_crispy_field }}
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-3">
+                            {{ form.estado_civil|as_crispy_field }}
+                        </div>
+                        <div class="col-md-9">
+                            {{ form.profissao|as_crispy_field }}
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mt-1">
+                        <div class="col-md-6">
+                            {{ form.nome_pai|as_crispy_field }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form.nome_mae|as_crispy_field }}
+                        </div>
+                    </div>
+
+                    <h5 class="section-title"><i class="bi bi-geo-alt-fill"></i> 2. Endereço e Contato</h5>
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            {{ form.cep|as_crispy_field }}
+                        </div>
+                        <div class="col-md-7">
+                            {{ form.endereco|as_crispy_field }}
+                        </div>
+                        <div class="col-md-2">
+                            {{ form.numero|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="row g-3 mt-1">
+                         <div class="col-md-4">
+                            {{ form.complemento|as_crispy_field }}
+                        </div>
+                        <div class="col-md-3">
+                            {{ form.bairro|as_crispy_field }}
+                        </div>
+                        <div class="col-md-3">
+                            {{ form.cidade|as_crispy_field }}
+                        </div>
+                        <div class="col-md-2">
+                            {{ form.uf|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="row g-3 mt-1">
+                        <div class="col-md-6">
+                            {{ form.telefone|as_crispy_field }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form.email|as_crispy_field }}
+                        </div>
+                    </div>
+
+                    <h5 class="section-title"><i class="bi bi-book-half"></i> 3. Dados Eclesiásticos</h5>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            {{ form.congregacao|as_crispy_field }}
+                        </div>
+                        <div class="col-md-3">
+                            {{ form.cargo|as_crispy_field }}
+                        </div>
+                        <div class="col-md-3">
+                            {{ form.cargo_outro|as_crispy_field }}
+                        </div>
+                    </div>
+                    
+                    <div class="row g-3 mt-1">
+                        <div class="col-md-4">
+                            {{ form.data_batismo_aguas|as_crispy_field }}
+                        </div>
+                        <div class="col-md-8">
+                            {{ form.igreja_procedencia|as_crispy_field }}
+                        </div>
+                    </div>
+
+                    <h5 class="section-title"><i class="bi bi-people-fill"></i> 4. Dados Familiares</h5>
+                    <div class="row g-3">
+                        <div class="col-md-12">
+                            {{ form.nome_conjuge|as_crispy_field }}
+                        </div>
+                    </div>
+
+                    <h5 class="section-title"><i class="bi bi-shield-lock-fill"></i> Anotações</h5>
+                    <div class="row g-3">
+                        <div class="col-md-12">
+                            {{ form.anotacoes|as_crispy_field }}
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 mt-5 mb-3">
+                        <button type="submit" class="btn btn-modern-success btn-lg">
+                            <i class="bi bi-check-circle-fill me-2"></i> Salvar Cadastro
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 1. Script de Preview da Foto
+    function mostrarPreview(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('visualizacao-foto').src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    // 2. Script de Busca de CEP
+    document.addEventListener("DOMContentLoaded", function() {
+        const cepInput = document.getElementById("id_cep");
+        
+        const campos = {
+            endereco: document.getElementById("id_endereco"),
+            bairro: document.getElementById("id_bairro"),
+            cidade: document.getElementById("id_cidade"),
+            uf: document.getElementById("id_uf")
+        };
+
+        function limparFormulario() {
+            campos.endereco.value = "";
+            campos.bairro.value = "";
+            campos.cidade.value = "";
+            campos.uf.value = "";
+        }
+
+        if (cepInput) {
+            cepInput.addEventListener("blur", function() {
+                const cep = this.value.replace(/\D/g, '');
+                if (cep !== "") {
+                    const validacep = /^[0-9]{8}$/;
+                    if(validacep.test(cep)) {
+                        campos.endereco.value = "...";
+                        
+                        fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                            .then(response => response.json())
+                            .then(data => {
+                                if (!("erro" in data)) {
+                                    campos.endereco.value = data.logradouro;
+                                    campos.bairro.value = data.bairro;
+                                    campos.cidade.value = data.localidade;
+                                    campos.uf.value = data.uf;
+                                    document.getElementById("id_numero").focus();
+                                } else {
+                                    limparFormulario();
+                                    alert("CEP não encontrado.");
+                                }
+                            })
+                            .catch(error => {
+                                limparFormulario();
+                                alert("Erro ao buscar CEP.");
+                            });
+                    } else {
+                        limparFormulario();
+                        alert("Formato de CEP inválido.");
+                    }
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

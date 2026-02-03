@@ -1,0 +1,190 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+/* --- 1. DEFINIÇÃO DAS CORES (VARIÁVEIS) --- */
+:root {
+    /* Cores do Tema Claro (Padrão) */
+    --primary-color: #0d9488;
+    --primary-hover: #0f766e;
+    
+    --bg-body: #f3f4f6;       /* Fundo da página */
+    --bg-card: #ffffff;       /* Fundo do cartão */
+    --bg-input: #f9fafb;      /* Fundo do input */
+    
+    --text-main: #1f2937;     /* Texto principal (escuro) */
+    --text-muted: #6b7280;    /* Texto secundário (cinza) */
+    --border-color: #e5e7eb;  /* Bordas */
+    
+    --header-border: #f3f4f6; /* Linha abaixo do título */
+}
+
+/* --- 2. TEMA ESCURO (DARK MODE) --- */
+body.dark-mode {
+    /* Redefinimos as variáveis para cores escuras */
+    --bg-body: #111827;       /* Cinza muito escuro (quase preto) */
+    --bg-card: #1f2937;       /* Cinza escuro */
+    --bg-input: #374151;      /* Cinza médio */
+    
+    --text-main: #f9fafb;     /* Texto claro */
+    --text-muted: #9ca3af;    /* Texto cinza claro */
+    --border-color: #4b5563;  /* Bordas escuras */
+    
+    --header-border: #374151;
+}
+
+/* --- 3. APLICAÇÃO GERAL --- */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-body) !important;
+    color: var(--text-main) !important;
+    transition: background-color 0.3s, color 0.3s; /* Transição suave */
+}
+
+/* Correções para classes do Bootstrap no Dark Mode */
+body.dark-mode .text-dark { color: var(--text-main) !important; }
+body.dark-mode .bg-light { background-color: var(--bg-body) !important; }
+body.dark-mode .text-muted { color: var(--text-muted) !important; }
+
+/* --- 4. COMPONENTES --- */
+
+/* Card Moderno */
+.card-modern {
+    background-color: var(--bg-card) !important;
+    border: none !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
+}
+
+.card-header-modern {
+    background-color: var(--bg-card) !important; /* Agora segue a cor do card */
+    border-bottom: 2px solid var(--header-border) !important;
+    padding: 1.5rem !important;
+    border-radius: 1rem 1rem 0 0 !important;
+}
+
+.card-header-modern h3 {
+    color: var(--text-main) !important;
+}
+
+/* Títulos das Seções */
+h5.section-title {
+    color: var(--primary-color) !important;
+    font-weight: 600;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 5px;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Campos de Texto (Inputs) */
+.form-control, .form-select, .textarea {
+    background-color: var(--bg-input) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-main) !important;
+    border-radius: 0.5rem !important;
+    padding: 0.75rem 1rem !important;
+}
+
+/* Texto dentro do input ao digitar */
+.form-control:focus, .form-select:focus {
+    background-color: var(--bg-card) !important;
+    border-color: var(--primary-color) !important;
+    color: var(--text-main) !important;
+    box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.2) !important;
+}
+
+/* Labels */
+.form-label {
+    color: var(--text-main);
+    font-weight: 500;
+}
+
+/* Botão Moderno */
+.btn-modern-success {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 12px 24px;
+    font-weight: 600;
+}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+:root {
+    --primary-color: #0d9488;
+    --primary-hover: #0f766e;
+    --bg-body: #f3f4f6;
+    --bg-card: #ffffff;
+    --bg-input: #f9fafb;
+    --text-main: #1f2937;
+    --text-muted: #6b7280;
+    --border-color: #e5e7eb;
+    --header-border: #f3f4f6;
+}
+
+body.dark-mode {
+    --bg-body: #111827;
+    --bg-card: #1f2937;
+    --bg-input: #374151;
+    --text-main: #f9fafb;
+    --text-muted: #9ca3af;
+    --border-color: #4b5563;
+    --header-border: #374151;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-body) !important;
+    color: var(--text-main) !important;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.card-modern {
+    background-color: var(--bg-card) !important;
+    border: none !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
+}
+
+.card-header-modern {
+    background-color: var(--bg-card) !important;
+    border-bottom: 2px solid var(--header-border) !important;
+    padding: 1.5rem !important;
+    border-radius: 1rem 1rem 0 0 !important;
+}
+
+.card-header-modern h3 { color: var(--text-main) !important; }
+
+h5.section-title {
+    color: var(--primary-color) !important;
+    font-weight: 600;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 5px;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.form-control, .form-select, .textarea {
+    background-color: var(--bg-input) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-main) !important;
+    border-radius: 0.5rem !important;
+    padding: 0.75rem 1rem !important;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: var(--bg-card) !important;
+    border-color: var(--primary-color) !important;
+    color: var(--text-main) !important;
+    box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.2) !important;
+}
+
+.form-label { color: var(--text-main); font-weight: 500; }
+
+.btn-modern-success {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 12px 24px;
+    font-weight: 600;
+}
