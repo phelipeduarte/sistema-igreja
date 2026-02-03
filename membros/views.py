@@ -37,3 +37,14 @@ def editar_membro(request, id):
         form = MembroForm(instance=membro)
 
     return render(request, 'membros/cadastro.html', {'form': form})
+# ... (suas outras funções cadastrar, listar e editar estão acima) ...
+
+# --- COLE ISTO NO FINAL DO ARQUIVO views.py ---
+def excluir_membro(request, id):
+    membro = get_object_or_404(Membro, id=id)
+    
+    if request.method == 'POST':
+        membro.delete()
+        return redirect('listar_membros')
+    
+    return render(request, 'membros/confirmar_exclusao.html', {'membro': membro})
