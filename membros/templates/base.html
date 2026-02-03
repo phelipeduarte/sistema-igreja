@@ -13,7 +13,9 @@
     
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="#"><i class="bi bi-church"></i> Minha Igreja</a>
+            <a class="navbar-brand fw-bold" href="{% url 'listar_membros' %}">
+                <i class="bi bi-church"></i> Assembleia de Deus em Piabetá
+            </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -22,7 +24,14 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="/cadastro/">Novo Membro</a>
+                        <a class="nav-link" href="{% url 'listar_membros' %}">
+                            <i class="bi bi-people-fill"></i> Membros
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'cadastrar_membro' %}">
+                            <i class="bi bi-person-plus"></i> Novo Membro
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/admin/">Administração</a>
@@ -37,6 +46,15 @@
     </nav>
 
     <div class="container mt-4">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
         {% block content %}
         {% endblock %}
     </div>
@@ -48,7 +66,6 @@
         const themeIcon = document.getElementById('theme-icon');
         const body = document.body;
 
-        // 1. Verifica se o usuário já tinha escolhido um tema antes
         const currentTheme = localStorage.getItem('theme');
         
         if (currentTheme === 'dark') {
@@ -56,17 +73,15 @@
             themeIcon.classList.replace('bi-moon-stars-fill', 'bi-sun-fill');
         }
 
-        // 2. Ação ao clicar no botão
         toggleBtn.addEventListener('click', () => {
             body.classList.toggle('dark-mode');
             
-            // Troca o ícone (Lua <-> Sol)
             if (body.classList.contains('dark-mode')) {
                 themeIcon.classList.replace('bi-moon-stars-fill', 'bi-sun-fill');
-                localStorage.setItem('theme', 'dark'); // Salva na memória
+                localStorage.setItem('theme', 'dark');
             } else {
                 themeIcon.classList.replace('bi-sun-fill', 'bi-moon-stars-fill');
-                localStorage.setItem('theme', 'light'); // Salva na memória
+                localStorage.setItem('theme', 'light');
             }
         });
     </script>

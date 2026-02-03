@@ -1,3 +1,4 @@
+from membros.views import cadastrar_membro, listar_membros, editar_membro
 from django.contrib import admin
 from django.urls import path
 from django.conf import settings
@@ -19,3 +20,11 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', listar_membros, name='listar_membros'),
+    path('cadastro/', cadastrar_membro, name='cadastrar_membro'),
+
+    # NOVA ROTA DE EDIÇÃO (com ID)
+    path('editar/<int:id>/', editar_membro, name='editar_membro'),
+]
