@@ -11,10 +11,9 @@ class Membro(models.Model):
     data_nascimento = models.DateField(verbose_name="Data de Nascimento")
     naturalidade = models.CharField(max_length=100, help_text="Cidade/Estado", blank=True, null=True)
     
-    # Documentos
+    # Documentos (Removido Orgao Exp)
     cpf = models.CharField(max_length=14, unique=True, verbose_name="CPF")
     rg = models.CharField(max_length=20, verbose_name="RG", blank=True, null=True)
-    orgao_expedidor = models.CharField(max_length=20, verbose_name="Órgão Exp.", blank=True, null=True)
     
     # Estado Civil
     ESTADO_CIVIL_CHOICES = [
@@ -129,7 +128,6 @@ class Membro(models.Model):
     # --- 7. CONTROLE E SITUAÇÃO ---
     aceite_termos = models.BooleanField(default=False, verbose_name="Aceito os termos de uso de dados")
     
-    # Campo Situacao (Substituindo o antigo 'ativo')
     SITUACAO_CHOICES = [
         ('ATIVO', 'Ativo - Em Comunhão'),
         ('MUDANCA', 'Saída com Carta de Mudança'),
