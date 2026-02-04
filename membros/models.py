@@ -2,7 +2,7 @@ from django.db import models
 from datetime import date
 
 class Membro(models.Model):
-    # --- 1. IDENTIFICAÇÃO (Controle Interno) ---
+    # --- 1. IDENTIFICAÇÃO ---
     numero_ficha = models.PositiveIntegerField(unique=True, verbose_name="Nº da Ficha", help_text="Número de identificação na igreja")
     foto = models.ImageField(upload_to='fotos_membros/', blank=True, null=True, verbose_name="Foto do Membro")
 
@@ -11,7 +11,7 @@ class Membro(models.Model):
     data_nascimento = models.DateField(verbose_name="Data de Nascimento")
     naturalidade = models.CharField(max_length=100, help_text="Cidade/Estado", blank=True, null=True)
     
-    # Documentos (Removido Orgao Exp)
+    # Documentos
     cpf = models.CharField(max_length=14, unique=True, verbose_name="CPF")
     rg = models.CharField(max_length=20, verbose_name="RG", blank=True, null=True)
     
@@ -43,8 +43,8 @@ class Membro(models.Model):
     email = models.EmailField(blank=True, null=True)
 
     # --- 4. DADOS ECLESIÁSTICOS ---
+    # (Removido Batismo no Espirito Santo)
     data_batismo_aguas = models.DateField(verbose_name="Batismo nas Águas", blank=True, null=True)
-    data_batismo_espirito = models.DateField(verbose_name="Batismo no Espírito Santo", blank=True, null=True)
     
     CARGO_CHOICES = [
         ('MEMBRO', 'Membro'),

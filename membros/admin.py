@@ -26,6 +26,10 @@ class MembroAdmin(admin.ModelAdmin):
 
     readonly_fields = ['foto_grande']
 
+    # --- CONFIGURAÇÃO DO SCRIPT DE MÁSCARAS ---
+    class Media:
+        js = ('js/mascaras.js',)
+
     # --- ESTRUTURA DO FORMULÁRIO ---
     fieldsets = (
         ('Identificação', {
@@ -35,7 +39,7 @@ class MembroAdmin(admin.ModelAdmin):
                 'foto', 
                 'nome_completo', 
                 'data_nascimento', 
-                ('cpf', 'rg')  # <--- ORGÃO EXP. REMOVIDO DAQUI
+                ('cpf', 'rg') 
             )
         }),
         ('Contato', {
@@ -46,7 +50,7 @@ class MembroAdmin(admin.ModelAdmin):
                 'cargo', 
                 'congregacao',
                 'data_batismo_aguas',
-                'data_batismo_espirito'
+                # Removido Batismo no Espirito Santo daqui
             )
         }),
         ('Dados Familiares', {
