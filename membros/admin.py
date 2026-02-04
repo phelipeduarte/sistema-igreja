@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from django.forms import TextInput # <--- Importante para ajustar a caixa
+from django.forms import TextInput
 from .models import Membro
 
 @admin.register(Membro)
@@ -31,9 +31,8 @@ class MembroAdmin(admin.ModelAdmin):
     class Media:
         js = ('js/mascaras.js',)
 
-    # --- AJUSTE VISUAL DA CAIXA PEQUENA ---
+    # --- AJUSTE VISUAL ---
     def formfield_for_dbfield(self, db_field, **kwargs):
-        # Se for o campo da ficha antiga, força ele a ser pequeno
         if db_field.name == 'numero_ficha_antiga':
             kwargs['widget'] = TextInput(attrs={'style': 'width: 80px;', 'placeholder': '00000'})
         return super().formfield_for_dbfield(db_field, **kwargs)
@@ -42,7 +41,7 @@ class MembroAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Identificação', {
             'fields': (
-                ('numero_ficha', 'numero_ficha_antiga'), # Coloquei lado a lado
+                ('numero_ficha', 'numero_ficha_antiga'),
                 'foto_grande',
                 'foto', 
                 'nome_completo', 
@@ -58,6 +57,7 @@ class MembroAdmin(admin.ModelAdmin):
                 'cargo', 
                 'congregacao',
                 'data_batismo_aguas',
+                'historico_eclesiastico', # <--- NOVO CAMPO ADICIONADO AQUI
             )
         }),
         ('Dados Familiares', {

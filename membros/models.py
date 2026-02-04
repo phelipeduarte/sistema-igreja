@@ -12,9 +12,8 @@ class Membro(models.Model):
         help_text="Gerado automaticamente pelo sistema"
     )
 
-    # --- AJUSTE AQUI: MAX 5 DÍGITOS ---
     numero_ficha_antiga = models.CharField(
-        max_length=5,  # <--- Mudou de 20 para 5
+        max_length=5, 
         verbose_name="Nº Ficha Antiga", 
         blank=True, 
         null=True, 
@@ -61,6 +60,9 @@ class Membro(models.Model):
 
     # --- 4. DADOS ECLESIÁSTICOS ---
     data_batismo_aguas = models.DateField(verbose_name="Batismo nas Águas", blank=True, null=True)
+    
+    # --- NOVO CAMPO ---
+    historico_eclesiastico = models.TextField(verbose_name="Histórico Eclesiástico", blank=True, null=True)
     
     CARGO_CHOICES = [
         ('MEMBRO', 'Membro'),
@@ -111,8 +113,8 @@ class Membro(models.Model):
         ('Bacaxá', 'Bacaxá'),
         ('Vila Canaã', 'Vila Canaã'),
         ('Bananeiras', 'Bananeiras'),
-        ('Água', 'Água'),
-        ('Fazendinha Branca', 'Fazendinha Branca'),
+        ('Água Branca', 'Água Branca'),
+        ('Fazendinha', 'Fazendinha'),
         ('Bonsucesso', 'Bonsucesso'),
         ('Praia Seca', 'Praia Seca'),
         ('Raia', 'Raia'),
