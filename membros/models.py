@@ -1,9 +1,18 @@
 from django.db import models
+from django.db.models import Max  # <--- IMPORTANTE: Importar o Max
 from datetime import date
 
 class Membro(models.Model):
     # --- 1. IDENTIFICAÇÃO ---
-    numero_ficha = models.PositiveIntegerField(unique=True, verbose_name="Nº da Ficha", help_text="Número de identificação na igreja")
+    # Agora com blank=True para permitir ficar vazio antes de salvar
+    numero_ficha = models.PositiveIntegerField(
+        unique=True, 
+        verbose_name="Nº da Ficha", 
+        blank=True, 
+        null=True,
+        help_text="Gerado automaticamente pelo sistema"
+    )
+    
     foto = models.ImageField(upload_to='fotos_membros/', blank=True, null=True, verbose_name="Foto do Membro")
 
     # --- 2. DADOS PESSOAIS ---
@@ -43,7 +52,6 @@ class Membro(models.Model):
     email = models.EmailField(blank=True, null=True)
 
     # --- 4. DADOS ECLESIÁSTICOS ---
-    # (Removido Batismo no Espirito Santo)
     data_batismo_aguas = models.DateField(verbose_name="Batismo nas Águas", blank=True, null=True)
     
     CARGO_CHOICES = [
@@ -146,10 +154,20 @@ class Membro(models.Model):
     data_cadastro = models.DateTimeField(auto_now_add=True)
     atualizado_em = models.DateTimeField(auto_now=True)
 
+    # --- LÓGICA AUTOMÁTICA ---
+    def save(self, *args, **kwargs):
+        # Se não tem número de ficha ainda...
+        if not self.numero_ficha:
+            # Pega o maior número que existe no banco
+            max_numero = Membro.objects.aggregate(Max('numero_ficha'))['numero_ficha__max']
+            # Se não tiver ninguém (None), começa do 1. Se tiver, soma + 1
+            self.numero_ficha = (max_numero or 0) + 1
+            
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.numero_ficha} - {self.nome_completo}"
 
-# --- CLASSE FILHOS ---
 class Filho(models.Model):
     membro = models.ForeignKey(Membro, on_delete=models.CASCADE, related_name='filhos')
     nome = models.CharField(max_length=200)
