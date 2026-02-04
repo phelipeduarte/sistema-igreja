@@ -1,10 +1,9 @@
 from django.db import models
-from django.db.models import Max  # <--- IMPORTANTE: Importar o Max
+from django.db.models import Max
 from datetime import date
 
 class Membro(models.Model):
     # --- 1. IDENTIFICAÇÃO ---
-    # Agora com blank=True para permitir ficar vazio antes de salvar
     numero_ficha = models.PositiveIntegerField(
         unique=True, 
         verbose_name="Nº da Ficha", 
@@ -134,7 +133,7 @@ class Membro(models.Model):
     anotacoes = models.TextField(verbose_name="Anotações", blank=True, null=True)
 
     # --- 7. CONTROLE E SITUAÇÃO ---
-    aceite_termos = models.BooleanField(default=False, verbose_name="Aceito os termos de uso de dados")
+    # (Removido aceite_termos)
     
     SITUACAO_CHOICES = [
         ('ATIVO', 'Ativo - Em Comunhão'),
@@ -154,20 +153,17 @@ class Membro(models.Model):
     data_cadastro = models.DateTimeField(auto_now_add=True)
     atualizado_em = models.DateTimeField(auto_now=True)
 
-    # --- LÓGICA AUTOMÁTICA ---
+    # --- LÓGICA AUTOMÁTICA DA FICHA ---
     def save(self, *args, **kwargs):
-        # Se não tem número de ficha ainda...
         if not self.numero_ficha:
-            # Pega o maior número que existe no banco
             max_numero = Membro.objects.aggregate(Max('numero_ficha'))['numero_ficha__max']
-            # Se não tiver ninguém (None), começa do 1. Se tiver, soma + 1
             self.numero_ficha = (max_numero or 0) + 1
-            
         super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.numero_ficha} - {self.nome_completo}"
 
+# --- CLASSE FILHOS ---
 class Filho(models.Model):
     membro = models.ForeignKey(Membro, on_delete=models.CASCADE, related_name='filhos')
     nome = models.CharField(max_length=200)

@@ -5,11 +5,12 @@ from .models import Membro
 @admin.register(Membro)
 class MembroAdmin(admin.ModelAdmin):
     # --- LISTAGEM ---
-    list_display = ('foto_pequena', 'nome_completo', 'cargo', 'congregacao', 'telefone', 'situacao')
+    list_display = ('foto_pequena', 'numero_ficha', 'nome_completo', 'congregacao', 'situacao')
     list_display_links = ('foto_pequena', 'nome_completo')
     list_filter = ('cargo', 'congregacao', 'situacao')
     search_fields = ('nome_completo', 'numero_ficha', 'cpf')
     list_per_page = 20
+    ordering = ('numero_ficha',)
 
     # --- VISUALIZAÇÃO DA FOTO ---
     def foto_pequena(self, obj):
@@ -24,9 +25,8 @@ class MembroAdmin(admin.ModelAdmin):
         return "Nenhuma foto cadastrada"
     foto_grande.short_description = "Visualização da Foto"
 
-    readonly_fields = ['foto_grande']
+    readonly_fields = ['foto_grande', 'numero_ficha']
 
-    # --- CONFIGURAÇÃO DO SCRIPT DE MÁSCARAS ---
     class Media:
         js = ('js/mascaras.js',)
 
@@ -50,13 +50,12 @@ class MembroAdmin(admin.ModelAdmin):
                 'cargo', 
                 'congregacao',
                 'data_batismo_aguas',
-                # Removido Batismo no Espirito Santo daqui
             )
         }),
         ('Dados Familiares', {
             'fields': ('estado_civil', 'nome_conjuge', 'nome_pai', 'nome_mae')
         }),
         ('Outros', {
-            'fields': ('profissao', 'situacao', 'anotacoes', 'aceite_termos')
+            'fields': ('profissao', 'situacao', 'anotacoes') # Removido aceite_termos
         }),
     )
