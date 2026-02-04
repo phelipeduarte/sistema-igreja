@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -107,9 +108,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-br'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Sao_Paulo'  # Aproveite para ajustar o fuso horário se não estiver
 
 USE_I18N = True
 
@@ -139,3 +140,59 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 database_url = os.environ.get("DATABASE_URL")
 if database_url:
     DATABASES['default'] = dj_database_url.parse(database_url)
+    # --- CONFIGURAÇÕES DO TEMA JAZZMIN ---
+JAZZMIN_SETTINGS = {
+    # Títulos e Logos
+    "site_title": "AD Piabetá",
+    "site_header": "Gestão Eclesiástica",
+    "site_brand": "AD Piabetá",
+    "welcome_sign": "Bem-vindo ao Sistema da Igreja",
+    "copyright": "Assembleia de Deus em Piabetá",
+    
+    # Menu Lateral
+    "search_model": "membros.Membro", # Barra de busca geral
+    
+    # Ícones para os menus (Usamos ícones do FontAwesome)
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+        "auth.Group": "fas fa-users",
+        "membros.Membro": "fas fa-church", # Ícone de igreja para membros
+    },
+    
+    # Personalização da Interface
+    "topmenu_links": [
+        {"name": "Ir para o Site",  "url": "home", "permissions": ["auth.view_user"]},
+    ],
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "order_with_respect_to": ["membros", "auth"],
+}
+
+# Cores e Estilo (Azul e Verde)
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": False,
+    "brand_small_text": False,
+    "brand_colour": "navbar-primary",
+    "accent": "accent-primary",
+    "navbar": "navbar-primary navbar-dark", # Azul do Topo
+    "no_navbar_border": False,
+    "navbar_fixed": False,
+    "layout_boxed": False,
+    "footer_fixed": False,
+    "sidebar_fixed": True,
+    "sidebar": "sidebar-light-primary", # Menu lateral claro
+    "sidebar_nav_small_text": False,
+    "theme": "flatly", # Tema moderno parecido com Bootstrap
+    "dark_mode_theme": None,
+    "button_classes": {
+        "primary": "btn-primary",
+        "secondary": "btn-secondary",
+        "info": "btn-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success" # Garante botões verdes onde precisa
+    }
+}
