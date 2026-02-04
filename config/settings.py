@@ -196,3 +196,14 @@ JAZZMIN_UI_TWEAKS = {
         "success": "btn-success" # Garante botões verdes onde precisa
     }
 }
+import os
+
+# ... (restante do código) ...
+
+# Configuração de Arquivos Estáticos (CSS, JS)
+STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# --- ADICIONE ISTO AQUI PARA AS FOTOS FUNCIONAREM ---
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
