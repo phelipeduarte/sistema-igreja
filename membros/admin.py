@@ -1,14 +1,15 @@
 from django.contrib import admin
 from django.utils.html import format_html
+from django.forms import TextInput # <--- Importante para ajustar a caixa
 from .models import Membro
 
 @admin.register(Membro)
 class MembroAdmin(admin.ModelAdmin):
     # --- LISTAGEM ---
-    list_display = ('foto_pequena', 'numero_ficha', 'nome_completo', 'congregacao', 'situacao')
+    list_display = ('foto_pequena', 'numero_ficha', 'numero_ficha_antiga', 'nome_completo', 'congregacao', 'situacao')
     list_display_links = ('foto_pequena', 'nome_completo')
     list_filter = ('cargo', 'congregacao', 'situacao')
-    search_fields = ('nome_completo', 'numero_ficha', 'cpf')
+    search_fields = ('nome_completo', 'numero_ficha', 'numero_ficha_antiga', 'cpf')
     list_per_page = 20
     ordering = ('numero_ficha',)
 
@@ -30,11 +31,18 @@ class MembroAdmin(admin.ModelAdmin):
     class Media:
         js = ('js/mascaras.js',)
 
+    # --- AJUSTE VISUAL DA CAIXA PEQUENA ---
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        # Se for o campo da ficha antiga, força ele a ser pequeno
+        if db_field.name == 'numero_ficha_antiga':
+            kwargs['widget'] = TextInput(attrs={'style': 'width: 80px;', 'placeholder': '00000'})
+        return super().formfield_for_dbfield(db_field, **kwargs)
+
     # --- ESTRUTURA DO FORMULÁRIO ---
     fieldsets = (
         ('Identificação', {
             'fields': (
-                'numero_ficha', 
+                ('numero_ficha', 'numero_ficha_antiga'), # Coloquei lado a lado
                 'foto_grande',
                 'foto', 
                 'nome_completo', 
@@ -56,6 +64,6 @@ class MembroAdmin(admin.ModelAdmin):
             'fields': ('estado_civil', 'nome_conjuge', 'nome_pai', 'nome_mae')
         }),
         ('Outros', {
-            'fields': ('profissao', 'situacao', 'anotacoes') # Removido aceite_termos
+            'fields': ('profissao', 'situacao', 'anotacoes')
         }),
     )

@@ -11,6 +11,15 @@ class Membro(models.Model):
         null=True,
         help_text="Gerado automaticamente pelo sistema"
     )
+
+    # --- AJUSTE AQUI: MAX 5 DÍGITOS ---
+    numero_ficha_antiga = models.CharField(
+        max_length=5,  # <--- Mudou de 20 para 5
+        verbose_name="Nº Ficha Antiga", 
+        blank=True, 
+        null=True, 
+        help_text="Máx. 5 dígitos"
+    )
     
     foto = models.ImageField(upload_to='fotos_membros/', blank=True, null=True, verbose_name="Foto do Membro")
 
@@ -133,8 +142,6 @@ class Membro(models.Model):
     anotacoes = models.TextField(verbose_name="Anotações", blank=True, null=True)
 
     # --- 7. CONTROLE E SITUAÇÃO ---
-    # (Removido aceite_termos)
-    
     SITUACAO_CHOICES = [
         ('ATIVO', 'Ativo - Em Comunhão'),
         ('MUDANCA', 'Saída com Carta de Mudança'),
@@ -153,7 +160,6 @@ class Membro(models.Model):
     data_cadastro = models.DateTimeField(auto_now_add=True)
     atualizado_em = models.DateTimeField(auto_now=True)
 
-    # --- LÓGICA AUTOMÁTICA DA FICHA ---
     def save(self, *args, **kwargs):
         if not self.numero_ficha:
             max_numero = Membro.objects.aggregate(Max('numero_ficha'))['numero_ficha__max']
@@ -163,7 +169,6 @@ class Membro(models.Model):
     def __str__(self):
         return f"{self.numero_ficha} - {self.nome_completo}"
 
-# --- CLASSE FILHOS ---
 class Filho(models.Model):
     membro = models.ForeignKey(Membro, on_delete=models.CASCADE, related_name='filhos')
     nome = models.CharField(max_length=200)
