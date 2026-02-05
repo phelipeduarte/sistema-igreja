@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from django.forms import TextInput
+from django.forms import TextInput, DateInput # <--- ADICIONADO DateInput AQUI
 from .models import Membro
 
 @admin.register(Membro)
@@ -26,15 +26,27 @@ class MembroAdmin(admin.ModelAdmin):
         return "Nenhuma foto cadastrada"
     foto_grande.short_description = "Visualização da Foto"
 
+    # --- CAMPOS TRAVADOS ---
     readonly_fields = ['foto_grande', 'numero_ficha']
 
+    # --- CARREGAR O SCRIPT DE MÁSCARAS ---
     class Media:
         js = ('js/mascaras.js',)
 
-    # --- AJUSTE VISUAL ---
+    # --- AJUSTES VISUAIS (FICHA PEQUENA E CALENDÁRIO) ---
     def formfield_for_dbfield(self, db_field, **kwargs):
+        
+        # 1. Caixa pequena para Ficha Antiga
         if db_field.name == 'numero_ficha_antiga':
             kwargs['widget'] = TextInput(attrs={'style': 'width: 80px;', 'placeholder': '00000'})
+        
+        # 2. Calendário Moderno para Datas (Nascimento e Batismo)
+        if db_field.name in ['data_nascimento', 'data_batismo_aguas']:
+            kwargs['widget'] = DateInput(
+                format='%Y-%m-%d',
+                attrs={'type': 'date'}
+            )
+            
         return super().formfield_for_dbfield(db_field, **kwargs)
 
     # --- ESTRUTURA DO FORMULÁRIO ---
@@ -57,7 +69,7 @@ class MembroAdmin(admin.ModelAdmin):
                 'cargo', 
                 'congregacao',
                 'data_batismo_aguas',
-                'historico_eclesiastico', # <--- NOVO CAMPO ADICIONADO AQUI
+                'historico_eclesiastico',
             )
         }),
         ('Dados Familiares', {
