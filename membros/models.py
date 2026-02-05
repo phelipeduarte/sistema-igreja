@@ -1,6 +1,55 @@
 from django.db import models
 from django.db.models import Max
+from django.core.exceptions import ValidationError
 from datetime import date
+import re
+
+# --- FUNÇÃO VALIDADORA DE CPF (A Mágica da Matemática) ---
+def validar_cpf_logica(value):
+    # Remove pontos e traços, deixa só números
+    cpf = ''.join(filter(str.isdigit, value))
+    
+    # Verifica se tem 11 dígitos
+    if len(cpf) != 11:
+        raise ValidationError('O CPF deve ter 11 dígitos.')
+    
+    # Verifica se todos os números são iguais (ex: 111.111.111-11)
+    if cpf == cpf[0] * 11:
+        raise ValidationError('CPF Inválido (números repetidos).')
+
+    # --- Cálculo do 1º Dígito Verificador ---
+    soma = 0
+    peso = 10
+    for i in range(9):
+        soma += int(cpf[i]) * peso
+        peso -= 1
+    
+    resto = soma % 11
+    if resto < 2:
+        digito1 = 0
+    else:
+        digito1 = 11 - resto
+        
+    if int(cpf[9]) != digito1:
+        raise ValidationError('CPF Inválido (dígitos verificadores não conferem).')
+
+    # --- Cálculo do 2º Dígito Verificador ---
+    soma = 0
+    peso = 11
+    for i in range(10):
+        soma += int(cpf[i]) * peso
+        peso -= 1
+        
+    resto = soma % 11
+    if resto < 2:
+        digito2 = 0
+    else:
+        digito2 = 11 - resto
+        
+    if int(cpf[10]) != digito2:
+        raise ValidationError('CPF Inválido.')
+
+# ---------------------------------------------------------
 
 class Membro(models.Model):
     # --- 1. IDENTIFICAÇÃO ---
@@ -27,8 +76,14 @@ class Membro(models.Model):
     data_nascimento = models.DateField(verbose_name="Data de Nascimento")
     naturalidade = models.CharField(max_length=100, help_text="Cidade/Estado", blank=True, null=True)
     
-    # Documentos
-    cpf = models.CharField(max_length=14, unique=True, verbose_name="CPF")
+    # Documentos (Com validação agora!)
+    cpf = models.CharField(
+        max_length=14, 
+        unique=True, 
+        verbose_name="CPF",
+        validators=[validar_cpf_logica] # <--- AQUI ESTÁ A PROTEÇÃO
+    )
+    
     rg = models.CharField(max_length=20, verbose_name="RG", blank=True, null=True)
     
     # Estado Civil
@@ -61,7 +116,6 @@ class Membro(models.Model):
     # --- 4. DADOS ECLESIÁSTICOS ---
     data_batismo_aguas = models.DateField(verbose_name="Batismo nas Águas", blank=True, null=True)
     
-    # --- NOVO CAMPO ---
     historico_eclesiastico = models.TextField(verbose_name="Histórico Eclesiástico", blank=True, null=True)
     
     CARGO_CHOICES = [
@@ -113,8 +167,8 @@ class Membro(models.Model):
         ('Bacaxá', 'Bacaxá'),
         ('Vila Canaã', 'Vila Canaã'),
         ('Bananeiras', 'Bananeiras'),
-        ('Água Branca', 'Água Branca'),
-        ('Fazendinha', 'Fazendinha'),
+        ('Água', 'Água'),
+        ('Fazendinha Branca', 'Fazendinha Branca'),
         ('Bonsucesso', 'Bonsucesso'),
         ('Praia Seca', 'Praia Seca'),
         ('Raia', 'Raia'),
